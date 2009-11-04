@@ -20,24 +20,32 @@ Use the following EE tags to generate each type of dropdown:
 
 REEgion Select accepts five optional parameters:
 
-`name=""`
+- `name=""`
 
-Value for the "name" attribute of the <select> menu. Defaults: "country", "state", "province", "county", "province_state".
+   Value for the "name" attribute of the <select> menu. Defaults: "country", "state", "province", "county", "province_state".
 
-`codes="true"`
+- `codes="true"`
 
-Whether to use the ISO 3166-2 abbreviation as the <option> value for countries, states, and provinces.  Default is "false" (uses the region name as the value).
+   Whether to use the ISO 3166-2 abbreviation as the <option> value for countries, states, and provinces.  Default is "false" (uses the region name as the value).
 
-`selected=""`
+- `selected=""`
 
-Value of the <option> element that should be selected by default.
+   Value of the <option> element that should be selected by default.
 
-`id=""`
+- `id=""`
 
-Value for the "id" attribute of the <select> menu.
+   Value for the "id" attribute of the <select> menu.
 
-`class=""`
+- `class=""`
 
-Value for the "class" attribute of the <select> menu.
+   Value for the "class" attribute of the <select> menu.
 
-Insipiration from - and props to - Nathan Pitman's [UK Counties Select and US States Select plugins](http://expressionengine.com/forums/viewthread/94799/), and Bridging Unit's [Countries Select plugin](http://expressionengine.com/forums/viewthread/106803/).
+- `show=""`
+
+   A pipe-delimited list of values to show, if you don't want all of the default values to display. (i.e. show="CA|NY|OH|MI")
+
+- `null_divider="false"`
+
+   Whether or not to include a divider option with a null value. Defaults to "true". 
+
+Insipiration from - and props to - Nathan Pitman's [UK Counties Select and US States Select plugins](http://expressionengine.com/forums/viewthread/94799/), and Bridging Unit's [Countries Select plugin](http://expressionengine.com/forums/viewthread/106803/). Thanks to Tim Kelty for adding new parameters.

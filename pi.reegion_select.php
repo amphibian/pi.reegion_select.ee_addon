@@ -2,20 +2,14 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'REEgion Select',
-	'pi_version'		=> '1.0',
+	'pi_version'		=> '1.0.1',
 	'pi_author'			=> 'Derek Hogue',
-	'pi_author_url'		=> 'http://amphibian.info/',
+	'pi_author_url'		=> 'http://github.com/amphibian/pi.reegion_select.ee_addon',
 	'pi_description'	=> 'Displays a drop down select menu of countries, US states, Canadian provinces, or UK counties.',
 	'pi_usage'			=> Reegion_select::usage()
 );
 
 class Reegion_select {
-
-	var $name 		= "";
-	var $selected 	= "";
-	var $id			= "";
-	var $class		= "";
-	var $codes		= "";
 	
 	var $rs_provinces = array("AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon");
 		
@@ -33,7 +27,7 @@ class Reegion_select {
 	 *
 	 * @param string $list Name of the data array to use when building the <select> menu.
 	 * @param string $name The default string for the "name" attribute on the <select> menu (in the case that one is not supplied).
-	 * @param string $label Text to be appeneed to the phrase "Select a" as the first option of the <select> menu.
+	 * @param string $label Text to be appended to the phrase "Select a" as the first option of the <select> menu.
 	 */
 	
 	function rs_dropdown_builder($list, $name, $label)
@@ -45,18 +39,25 @@ class Reegion_select {
 		$class = ( $TMPL->fetch_param('class') == '' ) ? '' : ' class="' . $TMPL->fetch_param('class') . '"';
 		$selected = $TMPL->fetch_param('selected');
 		$codes = $TMPL->fetch_param('codes');
-        
+		$show = $TMPL->fetch_param('show');
+		$null_divider = ( $TMPL->fetch_param('null_divider') == '' ) ? 'true' : $TMPL->fetch_param('null_divider');
+		
 		$r = '<select name="' . $name . '"' . $id . $class . '>
 	<option value="">Select a ' . $label . '</option>
-	<option value="">--------------------</option>
 	';
+		$r .= ($null_divider == 'true') ? '<option value="">--------------------</option>
+		' : '';
 		$list = ( $list == 'rs_provinces_states' ) ? array_merge($this->rs_provinces, $this->rs_states) : $this->$list;
 			
-		foreach ($list as $k => $v) {
+		foreach ($list as $k => $v)
+		{
 			$val = ( $codes === 'true' && !is_numeric($k) ) ? $k : $v;
-			$sel = ($val == $selected) ? ' selected="selected"' : '';
-			$r .= '<option value="' . $val . '"' . $sel . '>' . $v . '</option>
-	';
+			if ( $show == '' || in_array($val, explode('|', $show)) )
+			{
+				$sel = ($val == $selected) ? ' selected="selected"' : '';
+				$r .= '<option value="' . $val . '"' . $sel . '>' . $v . '</option>
+				';
+			}
 		}
 		$r .= '</select>';
 		
@@ -137,6 +138,10 @@ selected="" - value of the <option> element that should be selected by default.
 id="" - value for the "id" attribute of the <select> menu.
 
 class="" - value for the "class" attribute of the <select> menu.
+
+show="" - a pipe-delimited list of values to show, if you don't want all of the default values to display. (i.e. show="CA|NY|OH|MI")
+
+null_divider="false" - whether or not to include a divider option with a null value. Defaults to "true". 
 
 Insipiration from - and props to - Nathan Pitman's UK Counties Select and US States Select plugins, and Bridging Unit's Countries Select plugin.
 
